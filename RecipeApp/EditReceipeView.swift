@@ -16,9 +16,6 @@ struct EditRecipeView: View {
     @State private var desc: String
     @State private var ingredients: [String]
     @State private var steps: [String]
-    @State private var prepTime: Int
-    @State private var cookTime: Int
-    @State private var servings: Int
     @State private var category: String
     @State private var selectedImage: UIImage?
     @State private var showImagePicker = false
@@ -32,9 +29,6 @@ struct EditRecipeView: View {
         _desc = State(initialValue: recipe.desc)
         _ingredients = State(initialValue: recipe.ingredients)
         _steps = State(initialValue: recipe.steps)
-        _prepTime = State(initialValue: recipe.prepTime)
-        _cookTime = State(initialValue: recipe.cookTime)
-        _servings = State(initialValue: recipe.servings)
         _category = State(initialValue: recipe.category)
         _isShared = State(initialValue: recipe.isShared)
         
@@ -79,12 +73,6 @@ struct EditRecipeView: View {
                             }
                         }
                     }
-                }
-                
-                Section(header: Text("시간 및 양")) {
-                    Stepper("준비 시간: \(prepTime)분", value: $prepTime, in: 0...180, step: 5)
-                    Stepper("조리 시간: \(cookTime)분", value: $cookTime, in: 0...480, step: 5)
-                    Stepper("인분: \(servings)", value: $servings, in: 1...20)
                 }
                 
                 Section(header: Text("재료")) {
@@ -182,9 +170,6 @@ struct EditRecipeView: View {
         recipe.desc = desc
         recipe.ingredients = filteredIngredients
         recipe.steps = filteredSteps
-        recipe.prepTime = prepTime
-        recipe.cookTime = cookTime
-        recipe.servings = servings
         recipe.category = category
         recipe.imageData = imageData
         recipe.isShared = isShared

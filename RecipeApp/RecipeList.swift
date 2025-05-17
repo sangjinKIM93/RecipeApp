@@ -119,16 +119,13 @@ struct RecipeRow: View {
                     .cornerRadius(8)
             }
             
+            Spacer().frame(width: 10)
+            
             VStack(alignment: .leading, spacing: 4) {
                 Text(recipe.title)
                     .font(.headline)
                 
                 HStack {
-                    Label("\(recipe.prepTime + recipe.cookTime)분", systemImage: "clock")
-                        .font(.caption)
-                    
-                    Spacer()
-                    
                     if recipe.isFavorite {
                         Image(systemName: "heart.fill")
                             .foregroundColor(.red)

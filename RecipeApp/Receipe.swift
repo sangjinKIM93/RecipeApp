@@ -15,9 +15,6 @@ final class Recipe {
     var desc: String
     var ingredients: [String]
     var steps: [String]
-    var prepTime: Int // 준비 시간(분)
-    var cookTime: Int // 조리 시간(분)
-    var servings: Int // 몇 인분
     var isFavorite: Bool
     var imageData: Data? // 이미지 데이터
     var createdAt: Date
@@ -32,9 +29,6 @@ final class Recipe {
         desc: String,
         ingredients: [String],
         steps: [String],
-        prepTime: Int,
-        cookTime: Int,
-        servings: Int,
         isFavorite: Bool = false,
         imageData: Data? = nil,
         category: String = "기타",
@@ -45,9 +39,6 @@ final class Recipe {
         self.desc = desc
         self.ingredients = ingredients
         self.steps = steps
-        self.prepTime = prepTime
-        self.cookTime = cookTime
-        self.servings = servings
         self.isFavorite = isFavorite
         self.imageData = imageData
         self.createdAt = Date()
@@ -62,9 +53,6 @@ final class Recipe {
         let desc = data["desc"] as? String ?? ""
         let ingredients = data["ingredients"] as? [String] ?? []
         let steps = data["steps"] as? [String] ?? []
-        let prepTime = data["prepTime"] as? Int ?? 0
-        let cookTime = data["cookTime"] as? Int ?? 0
-        let servings = data["servings"] as? Int ?? 1
         let isFavorite = data["isFavorite"] as? Bool ?? false
         let category = data["category"] as? String ?? "기타"
         let isShared = data["isShared"] as? Bool ?? false
@@ -76,9 +64,6 @@ final class Recipe {
             desc: desc,
             ingredients: ingredients,
             steps: steps,
-            prepTime: prepTime,
-            cookTime: cookTime,
-            servings: servings,
             isFavorite: isFavorite,
             category: category,
             remoteId: id,
@@ -93,9 +78,6 @@ final class Recipe {
             "desc": desc,
             "ingredients": ingredients,
             "steps": steps,
-            "prepTime": prepTime,
-            "cookTime": cookTime,
-            "servings": servings,
             "isFavorite": isFavorite,
             "category": category,
             "createdAt": createdAt

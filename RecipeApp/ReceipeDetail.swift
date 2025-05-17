@@ -65,34 +65,6 @@ struct RecipeDetailView: View {
                             .padding(.top, 4)
                     }
                     
-                    // 요약 정보
-                    HStack(spacing: 20) {
-                        VStack {
-                            Image(systemName: "clock")
-                            Text("준비 시간")
-                                .font(.caption)
-                            Text("\(recipe.prepTime)분")
-                                .fontWeight(.medium)
-                        }
-                        
-                        VStack {
-                            Image(systemName: "flame")
-                            Text("조리 시간")
-                                .font(.caption)
-                            Text("\(recipe.cookTime)분")
-                                .fontWeight(.medium)
-                        }
-                        
-                        VStack {
-                            Image(systemName: "person.2")
-                            Text("인분")
-                                .font(.caption)
-                            Text("\(recipe.servings)")
-                                .fontWeight(.medium)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    
                     // 재료
                     VStack(alignment: .leading, spacing: 10) {
                         Text("재료")

@@ -16,9 +16,6 @@ struct AddRecipeView: View {
     @State private var desc = ""
     @State private var ingredients = [""]
     @State private var steps = [""]
-    @State private var prepTime = 10
-    @State private var cookTime = 20
-    @State private var servings = 2
     @State private var category = "메인 요리"
     @State private var selectedImage: UIImage?
     @State private var showImagePicker = false
@@ -62,12 +59,6 @@ struct AddRecipeView: View {
                             }
                         }
                     }
-                }
-                
-                Section(header: Text("시간 및 양")) {
-                    Stepper("준비 시간: \(prepTime)분", value: $prepTime, in: 0...180, step: 5)
-                    Stepper("조리 시간: \(cookTime)분", value: $cookTime, in: 0...480, step: 5)
-                    Stepper("인분: \(servings)", value: $servings, in: 1...20)
                 }
                 
                 Section(header: Text("재료")) {
@@ -165,9 +156,6 @@ struct AddRecipeView: View {
             desc: desc,
             ingredients: filteredIngredients,
             steps: filteredSteps,
-            prepTime: prepTime,
-            cookTime: cookTime,
-            servings: servings,
             imageData: imageData,
             category: category,
             isShared: isShared
