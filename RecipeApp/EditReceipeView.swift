@@ -14,6 +14,7 @@ struct EditRecipeView: View {
     
     @State private var title: String
     @State private var desc: String
+    @State private var link = ""
     @State private var ingredients: [String]
     @State private var steps: [String]
     @State private var category: String
@@ -27,6 +28,7 @@ struct EditRecipeView: View {
         self.recipe = recipe
         _title = State(initialValue: recipe.title)
         _desc = State(initialValue: recipe.desc)
+        _link = State(initialValue: recipe.link)
         _ingredients = State(initialValue: recipe.ingredients)
         _steps = State(initialValue: recipe.steps)
         _category = State(initialValue: recipe.category)
@@ -51,6 +53,8 @@ struct EditRecipeView: View {
                     
                     TextField("설명", text: $desc, axis: .vertical)
                         .lineLimit(3...6)
+                    
+                    TextField("링크", text: $link, axis: .vertical)
                 }
                 
                 Section(header: Text("이미지")) {
@@ -168,6 +172,7 @@ struct EditRecipeView: View {
         
         recipe.title = title
         recipe.desc = desc
+        recipe.link = link
         recipe.ingredients = filteredIngredients
         recipe.steps = filteredSteps
         recipe.category = category

@@ -13,6 +13,7 @@ import SwiftData
 final class Recipe {
     var title: String
     var desc: String
+    var link: String
     var ingredients: [String]
     var steps: [String]
     var isFavorite: Bool
@@ -27,6 +28,7 @@ final class Recipe {
     init(
         title: String,
         desc: String,
+        link: String,
         ingredients: [String],
         steps: [String],
         isFavorite: Bool = false,
@@ -37,6 +39,7 @@ final class Recipe {
     ) {
         self.title = title
         self.desc = desc
+        self.link = link
         self.ingredients = ingredients
         self.steps = steps
         self.isFavorite = isFavorite
@@ -51,6 +54,7 @@ final class Recipe {
     static func fromFirebase(data: [String: Any], id: String) -> Recipe {
         let title = data["title"] as? String ?? ""
         let desc = data["desc"] as? String ?? ""
+        let link = data["link"] as? String ?? ""
         let ingredients = data["ingredients"] as? [String] ?? []
         let steps = data["steps"] as? [String] ?? []
         let isFavorite = data["isFavorite"] as? Bool ?? false
@@ -62,6 +66,7 @@ final class Recipe {
         return Recipe(
             title: title,
             desc: desc,
+            link: link,
             ingredients: ingredients,
             steps: steps,
             isFavorite: isFavorite,
@@ -76,6 +81,7 @@ final class Recipe {
         return [
             "title": title,
             "desc": desc,
+            "link": link,
             "ingredients": ingredients,
             "steps": steps,
             "isFavorite": isFavorite,

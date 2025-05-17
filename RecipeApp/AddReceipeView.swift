@@ -14,6 +14,7 @@ struct AddRecipeView: View {
     
     @State private var title = ""
     @State private var desc = ""
+    @State private var link = ""
     @State private var ingredients = [""]
     @State private var steps = [""]
     @State private var category = "메인 요리"
@@ -37,6 +38,8 @@ struct AddRecipeView: View {
                     
                     TextField("설명", text: $desc, axis: .vertical)
                         .lineLimit(3...6)
+                    
+                    TextField("링크", text: $link, axis: .vertical)
                 }
                 
                 Section(header: Text("이미지")) {
@@ -154,6 +157,7 @@ struct AddRecipeView: View {
         let recipe = Recipe(
             title: title,
             desc: desc,
+            link: link,
             ingredients: filteredIngredients,
             steps: filteredSteps,
             imageData: imageData,

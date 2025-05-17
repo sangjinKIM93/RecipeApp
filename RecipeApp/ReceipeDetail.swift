@@ -63,6 +63,9 @@ struct RecipeDetailView: View {
                         
                         Text(recipe.desc)
                             .padding(.top, 4)
+                        
+                        Text(recipe.link)
+                            .padding(.top, 4)
                     }
                     
                     // 재료
