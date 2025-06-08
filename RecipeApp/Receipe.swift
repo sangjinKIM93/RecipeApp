@@ -14,7 +14,7 @@ final class Recipe {
     var title: String
     var desc: String
     var link: String
-    var ingredients: [String]
+    var ingredients: [Ingredient]
     var steps: [String]
     var isFavorite: Bool
     var imageData: Data? // 이미지 데이터
@@ -29,7 +29,7 @@ final class Recipe {
         title: String,
         desc: String,
         link: String,
-        ingredients: [String],
+        ingredients: [Ingredient],
         steps: [String],
         isFavorite: Bool = false,
         imageData: Data? = nil,
@@ -55,7 +55,7 @@ final class Recipe {
         let title = data["title"] as? String ?? ""
         let desc = data["desc"] as? String ?? ""
         let link = data["link"] as? String ?? ""
-        let ingredients = data["ingredients"] as? [String] ?? []
+        let ingredients = data["ingredients"] as? [Ingredient] ?? []
         let steps = data["steps"] as? [String] ?? []
         let isFavorite = data["isFavorite"] as? Bool ?? false
         let category = data["category"] as? String ?? "기타"

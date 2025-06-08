@@ -78,7 +78,8 @@ struct RecipeDetailView: View {
                                 Image(systemName: "circle.fill")
                                     .font(.system(size: 8))
                                     .padding(.top, 6)
-                                Text(ingredient)
+                                // TODO: 합친거로 수정
+                                Text("\(ingredient.name) \(ingredient.number)\(ingredient.scale)")
                             }
                         }
                     }

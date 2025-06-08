@@ -15,7 +15,7 @@ struct EditRecipeView: View {
     @State private var title: String
     @State private var desc: String
     @State private var link = ""
-    @State private var ingredients: [String]
+    @State private var ingredients: [Ingredient]
     @State private var steps: [String]
     @State private var category: String
     @State private var selectedImage: UIImage?
@@ -81,8 +81,35 @@ struct EditRecipeView: View {
                 
                 Section(header: Text("재료")) {
                     ForEach(0..<ingredients.count, id: \.self) { index in
-                        HStack {
-                            TextField("재료 \(index + 1)", text: $ingredients[index])
+                        HStack(spacing: 5) {
+                            TextField("재료 \(index + 1)", text: $ingredients[index].name)
+                                .frame(width: 100)
+                            
+                            
+                            TextField("", value: $ingredients[index].number, format: .number)
+                                .frame(minWidth: 10)
+                                .fixedSize()
+                            
+                            TextField("단위", text: $ingredients[index].scale)
+                                .fixedSize()
+                            
+                            Button(action: {
+                                print("pluse")
+                                ingredients[index].number += 1
+                            }) {
+                                Image(systemName: "plus")
+                                    .foregroundColor(.blue)
+                            }
+                            Spacer().frame(width: 2)
+                            Button(action: {
+                                print("minus")
+                                ingredients[index].number -= 1
+                            }) {
+                                Image(systemName: "minus")
+                                    .foregroundColor(.blue)
+                            }
+//
+                            Spacer()
                             
                             Button(action: {
                                 ingredients.remove(at: index)
@@ -93,11 +120,19 @@ struct EditRecipeView: View {
                             .disabled(ingredients.count == 1)
                         }
                     }
+                    .buttonStyle(PlainButtonStyle())
                     
                     Button(action: {
-                        ingredients.append("")
+                        ingredients.append(Ingredient())
                     }) {
                         Label("재료 추가", systemImage: "plus.circle")
+                    }
+                    
+                    IngredientGridView { ingredient in
+                        if ingredients.last?.name == "" {
+                            let _ = ingredients.popLast()
+                        }
+                        ingredients.append(Ingredient(name: ingredient, number: 1, scale: "스푼"))
                     }
                 }
                 
@@ -153,7 +188,7 @@ struct EditRecipeView: View {
                         updateRecipe()
                         dismiss()
                     }
-                    .disabled(title.isEmpty || ingredients.contains("") || steps.contains(""))
+                    .disabled(title.isEmpty || steps.contains(""))
                 }
             }
             .sheet(isPresented: $showImagePicker) {
@@ -164,7 +199,7 @@ struct EditRecipeView: View {
     
     private func updateRecipe() {
         // 빈 항목 필터링
-        let filteredIngredients = ingredients.filter { !$0.isEmpty }
+        let filteredIngredients = ingredients.filter { !$0.name.isEmpty }
         let filteredSteps = steps.filter { !$0.isEmpty }
         
         // 이미지 데이터 변환

@@ -6,6 +6,20 @@
 //
 
 import SwiftUI
+import SwiftData
+
+@Model
+final class Ingredient {
+    var name: String
+    var number: Int
+    var scale: String = "스푼"
+    
+    init(name: String = "", number: Int = 0, scale: String = "스푼") {
+        self.name = name
+        self.number = number
+        self.scale = scale
+    }
+}
 
 // MARK: - 레시피 추가 뷰
 struct AddRecipeView: View {
@@ -15,7 +29,7 @@ struct AddRecipeView: View {
     @State private var title = ""
     @State private var desc = ""
     @State private var link = ""
-    @State private var ingredients = [""]
+    @State private var ingredients: [Ingredient] = [Ingredient(name: "", number: 0, scale: "")]
     @State private var steps = [""]
     @State private var category = "메인 요리"
     @State private var selectedImage: UIImage?
@@ -66,8 +80,34 @@ struct AddRecipeView: View {
                 
                 Section(header: Text("재료")) {
                     ForEach(0..<ingredients.count, id: \.self) { index in
-                        HStack {
-                            TextField("재료 \(index + 1)", text: $ingredients[index])
+                        HStack(spacing: 5) {
+                            TextField("재료 \(index + 1)", text: $ingredients[index].name)
+                                .frame(width: 100)
+                            
+                            TextField("", value: $ingredients[index].number, format: .number)
+                                .frame(minWidth: 10)
+                                .fixedSize()
+                            
+                            TextField("단위", text: $ingredients[index].scale)
+                                .fixedSize()
+                            
+                            Button(action: {
+                                print("pluse")
+                                ingredients[index].number += 1
+                            }) {
+                                Image(systemName: "plus")
+                                    .foregroundColor(.blue)
+                            }
+                            Spacer().frame(width: 2)
+                            Button(action: {
+                                print("minus")
+                                ingredients[index].number -= 1
+                            }) {
+                                Image(systemName: "minus")
+                                    .foregroundColor(.blue)
+                            }
+//
+                            Spacer()
                             
                             Button(action: {
                                 ingredients.remove(at: index)
@@ -78,11 +118,20 @@ struct AddRecipeView: View {
                             .disabled(ingredients.count == 1)
                         }
                     }
+                    .buttonStyle(PlainButtonStyle())
+
                     
                     Button(action: {
-                        ingredients.append("")
+                        ingredients.append(Ingredient())
                     }) {
                         Label("재료 추가", systemImage: "plus.circle")
+                    }
+                    
+                    IngredientGridView { ingredient in
+                        if ingredients.last?.name == "" {
+                            let _ = ingredients.popLast()
+                        }
+                        ingredients.append(Ingredient(name: ingredient, number: 1, scale: "스푼"))
                     }
                 }
                 
@@ -137,7 +186,7 @@ struct AddRecipeView: View {
                         saveRecipe()
                         dismiss()
                     }
-                    .disabled(title.isEmpty || ingredients.contains("") || steps.contains(""))
+                    .disabled(title.isEmpty || steps.contains(""))
                 }
             }
             .sheet(isPresented: $showImagePicker) {
@@ -148,7 +197,7 @@ struct AddRecipeView: View {
     
     private func saveRecipe() {
         // 빈 항목 필터링
-        let filteredIngredients = ingredients.filter { !$0.isEmpty }
+        let filteredIngredients = ingredients.filter { !$0.name.isEmpty }
         let filteredSteps = steps.filter { !$0.isEmpty }
         
         // 이미지 데이터 변환
