@@ -15,21 +15,38 @@ struct ContentView: View {
     @State private var showAddRecipe = false
     
     var body: some View {
-        NavigationStack(path: $path) {
-            RecipeListView()
-                .navigationTitle("레시피")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            showAddRecipe = true
-                        }) {
-                            Image(systemName: "plus")
+        TabView {
+            NavigationStack(path: $path) {
+                RecipeListView()
+                    .navigationTitle("레시피")
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                showAddRecipe = true
+                            }) {
+                                Image(systemName: "plus")
+                            }
                         }
                     }
-                }
-                .sheet(isPresented: $showAddRecipe) {
-                    AddRecipeView()
-                }
+                    .sheet(isPresented: $showAddRecipe) {
+                        AddRecipeView()
+                    }
+            }
+            .tabItem {
+                Image(systemName: "list.bullet")
+                Text("My")
+            }
+            NavigationStack(path: $path) {
+                SharedRecipeView()
+                    .navigationTitle("공유")
+                    .sheet(isPresented: $showAddRecipe) {
+//                        AddRecipeView()
+                    }
+            }
+            .tabItem {
+                Image(systemName: "heart")
+                Text("Other")
+            }
         }
     }
 }

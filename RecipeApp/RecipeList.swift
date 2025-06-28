@@ -61,7 +61,7 @@ struct RecipeListView: View {
             // 레시피 목록
             List {
                 ForEach(filteredRecipes) { recipe in
-                    NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
+                    NavigationLink(destination: RecipeDetailView(recipe: recipe, needEdit: true)) {
                         RecipeRow(recipe: recipe)
                     }
                 }

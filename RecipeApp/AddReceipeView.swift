@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @Model
-final class Ingredient {
+final class Ingredient: Codable {
     var name: String
     var number: Int
     var scale: String = "스푼"
@@ -18,6 +18,46 @@ final class Ingredient {
         self.name = name
         self.number = number
         self.scale = scale
+    }
+    
+    // Firebase에 저장하기 위한 딕셔너리 변환
+    func toFirebase() -> [String: Any] {
+        return [
+            "name": name,
+            "number": number,
+            "scale": scale
+        ]
+    }
+    
+    // 딕셔너리에서 Ingredient 객체 생성
+    static func fromFirebase(_ data: [String: Any]) -> Ingredient? {
+        guard let name = data["name"] as? String,
+              let number = data["number"] as? Int else {
+            return nil
+        }
+        
+        let scale = data["scale"] as? String ?? "스푼"
+        return Ingredient(name: name, number: number, scale: scale)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case number
+        case scale
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.number = try container.decode(Int.self, forKey: .number)
+        self.scale = try container.decodeIfPresent(String.self, forKey: .scale) ?? "스푼"
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        try container.encode(number, forKey: .number)
+        try container.encode(scale, forKey: .scale)
     }
 }
 
@@ -215,5 +255,15 @@ struct AddRecipeView: View {
         )
         
         modelContext.insert(recipe)
+
+        // fireStore 저장
+        Task {
+            let firestoreManager = FirestoreManager()
+            do {
+                try await firestoreManager.saveRecipe(recipe, id: recipe.id)
+            } catch {
+                print("firebase error!!!")
+            }
+        }
     }
 }

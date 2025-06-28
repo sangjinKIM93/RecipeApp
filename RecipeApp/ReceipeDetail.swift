@@ -12,6 +12,12 @@ struct RecipeDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable var recipe: Recipe
     @State private var showEditSheet = false
+    @State private var needEdit: Bool
+    
+    init(recipe: Recipe, needEdit: Bool = false) {
+        self.recipe = recipe
+        self.needEdit = needEdit
+    }
     
     var body: some View {
         ScrollView {
@@ -121,9 +127,11 @@ struct RecipeDetailView: View {
         .navigationTitle("레시피 상세")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("편집") {
-                    showEditSheet = true
+            if needEdit {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("편집") {
+                        showEditSheet = true
+                    }
                 }
             }
         }
