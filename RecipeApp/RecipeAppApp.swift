@@ -10,7 +10,7 @@ import SwiftData
 import FirebaseCore
 
 @main
-struct RecipeAppApp: App {
+struct RecipeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {
